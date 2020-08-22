@@ -23,5 +23,11 @@
 
 - run tests
 - build prod images
+- login to docker hub
 - pushes to docker hub
 - tells aws to use these images from hub
+
+## doker hub
+
+- contains our public and private repos
+- [Link](https://hub.docker.com/u/meyash)
