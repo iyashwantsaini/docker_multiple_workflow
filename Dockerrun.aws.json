@@ -1,0 +1,37 @@
+{
+    "AWSEBDockerrunVersion": 2,
+    "containerDefinitions": [{
+            "name": "client",
+            "image": "meyash/multiple_workflow_client",
+            "hostname": "client",
+            "essential": false
+        },
+        {
+            "name": "server",
+            "image": "meyash/multiple_workflow_server",
+            "hostname": "api",
+            "essential": false
+        },
+        {
+            "name": "nginx",
+            "image": "meyash/multiple_workflow_nginx",
+            "hostname": "nginx",
+            "essential":true,
+            "portMappings":[
+                {
+                    "hostPort":80,
+                    "containerPort":80
+                }
+            ],
+            "links":[
+                "client","server"
+            ]
+        },
+        {
+            "name": "worker",
+            "image": "meyash/multiple_workflow_worker",
+            "hostname": "worker",
+            "essential":false
+        }
+    ]
+}
