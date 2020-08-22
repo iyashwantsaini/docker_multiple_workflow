@@ -2,8 +2,8 @@
 
 ## Architecture
 
-![multi](./README/multi.png)
-![process](./README/process.png)
+![multi](./README/multi.PNG)
+![process](./README/process.PNG)
 
 - Postgres -> for permanent storage
 - Redis -> for in memory storage
