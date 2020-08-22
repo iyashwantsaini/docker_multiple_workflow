@@ -1,0 +1,48 @@
+version: "3"
+services:
+  postgres:
+    image: "postgres:latest"
+  redis:
+    image: "redis:latest"
+  # our diff services
+
+  nginx:
+    restart: always
+    build:
+      dockerfile: DockerFile.dev
+      context: ./nginx
+    ports:
+      - '3050:80'
+
+  api:
+    build:
+      context: ./server
+      dockerfile: DockerFile.dev
+    volumes:
+      - /app/node_modules
+      - ./server:/app
+    environment:
+      # look at docs for these images to get default values
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - PGUSER=postgres
+      - PGHOST=postgres
+      - PGPORT=5432
+      - PGDATABASE=postgres
+      - PGPASSWORD=postgres_password
+
+  client:
+    build:
+      context: ./client
+      dockerfile: DockerFile.dev
+    volumes:
+      - /app/node_modules
+      - ./client:/app
+
+  worker:
+    build:
+      context: ./worker
+      dockerfile: DockerFile.dev
+    volumes:
+      - /app/node_modules
+      - ./worker:/app
