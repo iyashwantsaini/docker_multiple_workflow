@@ -72,4 +72,6 @@
 - essential
   - atleast 1 must be essential
   - if essential container fails, all others are closed automatically
+- memory
+  - ram req for service
 
