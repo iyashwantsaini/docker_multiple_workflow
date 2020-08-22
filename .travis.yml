@@ -1,0 +1,28 @@
+sudo: required
+services:
+  - docker
+
+# dev docker has tests
+# prod version has no tests
+before_install:
+  - docker build -t meyash/multiple_workflow -f ./client/DockerFile.dev ./client
+
+script: 
+  - docker run meyash/multiple_workflow npm test -- --coverage
+
+after_success:
+  - docker build -t meyash/multiple_workflow_client ./client
+  - docker build -t meyash/multiple_workflow_nginx ./nginx
+  - docker build -t meyash/multiple_workflow_server ./server
+  - docker build -t meyash/multiple_workflow_worker ./worker
+  # login to cli
+  # credentials are in travis env vars
+  # docker login command for travis
+  # get docker_pass from travis and send it to next command
+  - echo "$docker_pass" | docker login -u "$docker_id" --password-stdin
+  # push these images to docker hub
+  - docker push meyash/multiple_workflow_client
+  - docker push meyash/multiple_workflow_nginx
+  - docker push meyash/multiple_workflow_server
+  - docker push meyash/multiple_workflow_worker
+
