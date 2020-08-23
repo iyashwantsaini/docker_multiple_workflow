@@ -5,20 +5,17 @@ services:
   redis:
     image: "redis:latest"
   # our diff services
-
   nginx:
     restart: always
     build:
-      dockerfile: DockerFile.dev
+      dockerfile: Dockerfile.dev
       context: ./nginx
     ports:
       - '3050:80'
-
   api:
-    stdin_open: true
     build:
+      dockerfile: Dockerfile.dev
       context: ./server
-      dockerfile: DockerFile.dev
     volumes:
       - /app/node_modules
       - ./server:/app
@@ -28,24 +25,23 @@ services:
       - REDIS_PORT=6379
       - PGUSER=postgres
       - PGHOST=postgres
-      - PGPORT=5432
       - PGDATABASE=postgres
       - PGPASSWORD=postgres_password
-
+      - PGPORT=5432
   client:
-    # stdin_open: true
     build:
+      dockerfile: Dockerfile.dev
       context: ./client
-      dockerfile: DockerFile.dev
     volumes:
       - /app/node_modules
       - ./client:/app
-
   worker:
-    stdin_open: true
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
     build:
+      dockerfile: Dockerfile.dev
       context: ./worker
-      dockerfile: DockerFile.dev
     volumes:
       - /app/node_modules
       - ./worker:/app

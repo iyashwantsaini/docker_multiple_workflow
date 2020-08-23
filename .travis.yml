@@ -1,22 +1,21 @@
 sudo: required
-language: generic
 services:
   - docker
 
 # dev docker has tests
 # prod version has no tests
 before_install:
-  - docker build -t meyash/multiple_workflow -f ./client/DockerFile.dev ./client
+  - docker build -t meyash/react_test -f ./client/Dockerfile.dev ./client
 
 script: 
   # - docker run -e CI=true meyash/multiple_workflow npm test -- --coverage
-  - docker run meyash/multiple_workflow npm test -- --coverage
+  - docker run meyash/react_test npm test -- --coverage
 
 after_success:
-  - docker build -t meyash/multiple_workflow_client -f ./client/DockerFile ./client
-  - docker build -t meyash/multiple_workflow_nginx -f ./nginx/DockerFile ./nginx
-  - docker build -t meyash/multiple_workflow_server -f ./server/DockerFile ./server
-  - docker build -t meyash/multiple_workflow_worker -f ./worker/DockerFile ./worker
+  - docker build -t meyash/multiple_workflow_client ./client
+  - docker build -t meyash/multiple_workflow_nginx ./nginx
+  - docker build -t meyash/multiple_workflow_server ./server
+  - docker build -t meyash/multiple_workflow_worker ./worker
   # login to cli
   # credentials are in travis env vars
   # docker login command for travis
