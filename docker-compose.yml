@@ -33,7 +33,7 @@ services:
       - PGPASSWORD=postgres_password
 
   client:
-    stdin_open: true
+    # stdin_open: true
     build:
       context: ./client
       dockerfile: DockerFile.dev
